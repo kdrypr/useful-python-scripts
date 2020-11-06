@@ -3,7 +3,7 @@
 I will share my python scripts from here.
 
 
-**Requirements
+**Requirements**
 
 - pip3 install godaddypy
 - pip3 install ssl
