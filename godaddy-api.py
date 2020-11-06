@@ -18,27 +18,32 @@ domainList = [
 # Read pub key from automatically and send to variable
 
 def addNewRecord():
-    for domain in domainList:
+        for domain in domainList:
         # Default A Record
-        defaultValue = 'X.X.X.X'
+        defaultValue = '0.0.0.0'
         req = client.add_record(domain, {'data': defaultValue, 'name': '@', 'ttl': 600, 'type': 'A'})
         print(req)
 
         # Mail A Record
-        recordValue = 'X.X.X.X'
+        recordValue = '0.0.0.0'
         req = client.add_record(domain, {'data': recordValue, 'name': 'mail', 'ttl': 600, 'type': 'A'})
+        print(req)
+
+        # MX Record
+        defaultValue = 'mail.' + domain
+        req = client.add_record(domain, {'data': defaultValue, 'name': '@', 'ttl': 600, 'type': 'MX'})
         print(req)
 
         # SPF Record
         spfValue = 'v=spf1 a mx a:' + domain + ' ~all'
-        req = client.add_record(domain, {'data': spfValue, 'name': 'spf1', 'ttl': 600, 'type': 'TXT'})
+        req = client.add_record(domain, {'data': spfValue, 'name': '@', 'ttl': 600, 'type': 'TXT'})
         print(req)
 
         # DMARC Record
         dmarcValue = 'v=DMARC1; p=reject; rua=mailto:admin@' + domain
         req = client.add_record(domain, {'data': dmarcValue, 'name': '_dmarc', 'ttl': 600, 'type': 'TXT'})
         print(req)
-
+        
         #DKIM Record
         with open('/dkim_pub_key_path/' + domain + '.pub', 'r') as file:
             data = file.read().replace('\n', '')
